@@ -51,8 +51,7 @@ class PostTransactionRequestModel implements ArrayAccess
       * @var string[]
       */
     static $swaggerTypes = array(
-        'payer' => 'string',
-        'customer_id' => 'string',
+        'payer' => 'string',       
         'amount' => 'double',
         'payer_fee' => 'double',
         'attribute_values' => 'map[string,string]',
@@ -77,8 +76,7 @@ class PostTransactionRequestModel implements ArrayAccess
       * @var string[] 
       */
     static $attributeMap = array(
-        'payer' => 'payer',
-        'customer_id' => 'customerId',
+        'payer' => 'payer',       
         'amount' => 'amount',
         'payer_fee' => 'payerFee',
         'attribute_values' => 'attributeValues',
@@ -103,8 +101,7 @@ class PostTransactionRequestModel implements ArrayAccess
       * @var string[]
       */
     static $setters = array(
-        'payer' => 'setPayer',
-        'customer_id' => 'setCustomerId',
+        'payer' => 'setPayer',        
         'amount' => 'setAmount',
         'payer_fee' => 'setPayerFee',
         'attribute_values' => 'setAttributeValues',
@@ -129,8 +126,7 @@ class PostTransactionRequestModel implements ArrayAccess
       * @var string[]
       */
     static $getters = array(
-        'payer' => 'getPayer',
-        'customer_id' => 'getCustomerId',
+        'payer' => 'getPayer',        
         'amount' => 'getAmount',
         'payer_fee' => 'getPayerFee',
         'attribute_values' => 'getAttributeValues',
@@ -156,13 +152,7 @@ class PostTransactionRequestModel implements ArrayAccess
       * @var string
       */
     protected $payer;
-    
-    /**
-      * $customer_id [Deprecated. Please use the AttributeValues instead.] Unique identifier for the customer.
-      * @var string
-      */
-    protected $customer_id;
-    
+        
     /**
       * $amount Total amount to charge not including any payer fees.
       * @var double
@@ -250,8 +240,7 @@ class PostTransactionRequestModel implements ArrayAccess
     {
         
         if ($data != null) {
-            $this->payer = $data["payer"];
-            $this->customer_id = $data["customer_id"];
+            $this->payer = $data["payer"];            
             $this->amount = $data["amount"];
             $this->payer_fee = $data["payer_fee"];
             $this->attribute_values = $data["attribute_values"];
@@ -287,28 +276,7 @@ class PostTransactionRequestModel implements ArrayAccess
         
         $this->payer = $payer;
         return $this;
-    }
-    
-    /**
-     * Gets customer_id
-     * @return string
-     */
-    public function getCustomerId()
-    {
-        return $this->customer_id;
-    }
-  
-    /**
-     * Sets customer_id
-     * @param string $customer_id [Deprecated. Please use the AttributeValues instead.] Unique identifier for the customer.
-     * @return $this
-     */
-    public function setCustomerId($customer_id)
-    {
-        
-        $this->customer_id = $customer_id;
-        return $this;
-    }
+    }  
     
     /**
      * Gets amount
