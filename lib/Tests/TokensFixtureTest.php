@@ -46,6 +46,7 @@ use Swagger\Client\Api\TransactionsApi;
 use Swagger\Client\Model\PostTransactionRequestModel;
 require_once '../../vendor/autoload.php';
 
+
 /**
  * TokensFixtureTest Class Doc Comment
  *
@@ -67,11 +68,11 @@ class TokensFixtureTest extends TestCase
     public function setUp()
     {
         parent::setUp();      
-		$configuration = new Configuration();
-		$configuration->setHost("https://api-sandbox.epaypolicy.com");
-		//$configuration->addDefaultHeader("Authorization", "Basic " + base64_encode("3e18c84b5a434c:o0s9p23jsdf22va"));
-		//$configuration->addDefaultHeader("Authorization", "Api-Key 82604ac77dee40b5ae8fceea7ef12d3");
-		$configuration->addDefaultHeader("Authorization", "Basic M2UxOGM4NGI1YTQzNGM6bzBzOXAyM2pzZGYyMnZh");		
+        $testConfig = parse_ini_file('../../config.ini'); 
+		$configuration = new Configuration();        
+        $configuration->setHost($testConfig['API_URI']);        
+        $keyWithSecret = $testConfig['API_KEY'].":".$testConfig['API_SECRET'];
+        $configuration->addDefaultHeader("Authorization", "Basic " .base64_encode($keyWithSecret)); ;		
 		
 		$apiClient = new ApiClient($configuration);
 		
@@ -131,10 +132,13 @@ class TokensFixtureTest extends TestCase
         
         $this->assertTrue($tokenId != null);
 
+        //Get random amount between 1 and 1000
+        $randomAmount = rand(1,1000);        
+
         $postTransactionRequestModel = new PostTransactionRequestModel();
         $postTransactionRequestModel->setPayer("John Smith");
         $postTransactionRequestModel->setEmailAddress("jsmith@example.com");
-        $postTransactionRequestModel->setAmount(871.33);
+        $postTransactionRequestModel->setAmount($randomAmount);
         $postTransactionRequestModel->setTokenId($tokenId);
         $postTransactionRequestModel->setComments("Sample Comments");
         $postTransactionRequestModel->setSendReceipt(false);

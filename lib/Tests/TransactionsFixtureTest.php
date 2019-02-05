@@ -57,21 +57,20 @@ require_once '../../vendor/autoload.php';
 class TransactionsFixtureTest extends TestCase
 {
 
-    private $transactionsApi;
-
+    private $transactionsApi;   
     /**
      * Prepares the environment before running a test.
      */
     public function setUp()
     {
-        parent::setUp();      
-		$configuration = new Configuration();
-		$configuration->setHost("https://api-sandbox.epaypolicy.com");
-		//$configuration->addDefaultHeader("Authorization", "Basic " + base64_encode("3e18c84b5a434c:o0s9p23jsdf22va"));
-		//$configuration->addDefaultHeader("Authorization", "Api-Key 82604ac77dee40b5ae8fceea7ef12d3");
-		$configuration->addDefaultHeader("Authorization", "Basic M2UxOGM4NGI1YTQzNGM6bzBzOXAyM2pzZGYyMnZh");		
-		
-		$apiClient = new ApiClient($configuration);
+        parent::setUp();     
+        $testConfig = parse_ini_file('../../config.ini'); 
+		$configuration = new Configuration();        
+        $configuration->setHost($testConfig['API_URI']);        
+        $keyWithSecret = $testConfig['API_KEY'].":".$testConfig['API_SECRET'];
+        $configuration->addDefaultHeader("Authorization", "Basic " .base64_encode($keyWithSecret));       
+        
+        $apiClient = new ApiClient($configuration);
 		
         $this->transactionsApi = new TransactionsApi($apiClient);
     }
@@ -92,14 +91,18 @@ class TransactionsFixtureTest extends TestCase
      * TBD
      *
      */
-    public function testShould_Successfully_Process_And_Void_Credit_Card() {		
+    public function testShould_Successfully_Process_And_Void_Credit_Card() {	
+        
+        //Get random amount between 1 and 1000
+        $randomAmount = rand(1,1000);  
+        
         $postTransactionRequestModel = new PostTransactionRequestModel();
         $postTransactionRequestModel->setPayer("John Smith");
         $postTransactionRequestModel->setEmailAddress("jsmith@example.com");
-        $postTransactionRequestModel->setAmount(871.33);
+        $postTransactionRequestModel->setAmount($randomAmount);
         $postTransactionRequestModel->setComments("Sample Comments");
         $postTransactionRequestModel->setSendReceipt(false);  
-        $postTransactionRequestModel->setPayerFee(87.13);      
+        $postTransactionRequestModel->setPayerFee($randomAmount * .10 );      
 		
 		$creditCardInfo = new CreditCardInformationModel();
 		$creditCardInfo->setAccountHolder("John Smith");
@@ -135,5 +138,6 @@ class TransactionsFixtureTest extends TestCase
         $voidTransactionRequestMode->setSendReceipt(false);
 
         $statusCode = $this->transactionsApi->transactionsVoid($transactionId, $voidTransactionRequestMode);
+        $this->assertSame($statusCode, 200);
     }
 }
