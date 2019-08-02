@@ -175,7 +175,7 @@ class TransactionsApi
         } catch (ApiException $e) {
             switch ($e->getCode()) { 
             case 400:
-                $data = \Swagger\Client\ObjectSerializer::deserialize($e->getResponseBody(), 'map[string,\Swagger\Client\Model\Object]', $e->getResponseHeaders());
+                $data = \Swagger\Client\ObjectSerializer::deserialize($e->getResponseBody(), 'map[string,\Swagger\Client\Model\ObjectDictionary]', $e->getResponseHeaders());
                 $e->setResponseObject($data);
                 break;
             }
@@ -280,7 +280,7 @@ class TransactionsApi
                 $e->setResponseObject($data);
                 break;
             case 400:
-                $data = \Swagger\Client\ObjectSerializer::deserialize($e->getResponseBody(), 'map[string,\Swagger\Client\Model\Object]', $e->getResponseHeaders());
+                $data = \Swagger\Client\ObjectSerializer::deserialize($e->getResponseBody(), 'map[string,\Swagger\Client\Model\ObjectDictionary]', $e->getResponseHeaders());
                 $e->setResponseObject($data);
                 break;
             }
@@ -374,7 +374,7 @@ class TransactionsApi
         } catch (ApiException $e) {
             switch ($e->getCode()) { 
             case 400:
-                $data = \Swagger\Client\ObjectSerializer::deserialize($e->getResponseBody(), 'map[string,\Swagger\Client\Model\Object]', $e->getResponseHeaders());
+                $data = \Swagger\Client\ObjectSerializer::deserialize($e->getResponseBody(), 'map[string,\Swagger\Client\Model\ObjectDictionary]', $e->getResponseHeaders());
                 $e->setResponseObject($data);
                 break;
             }
@@ -481,7 +481,7 @@ class TransactionsApi
         } catch (ApiException $e) {
             switch ($e->getCode()) { 
             case 400:
-                $data = \Swagger\Client\ObjectSerializer::deserialize($e->getResponseBody(), 'map[string,\Swagger\Client\Model\Object]', $e->getResponseHeaders());
+                $data = \Swagger\Client\ObjectSerializer::deserialize($e->getResponseBody(), 'map[string,\Swagger\Client\Model\ObjectDictionary]', $e->getResponseHeaders());
                 $e->setResponseObject($data);
                 break;
             }
@@ -594,7 +594,7 @@ class TransactionsApi
         } catch (ApiException $e) {
             switch ($e->getCode()) { 
             case 400:
-                $data = \Swagger\Client\ObjectSerializer::deserialize($e->getResponseBody(), 'map[string,\Swagger\Client\Model\Object]', $e->getResponseHeaders());
+                $data = \Swagger\Client\ObjectSerializer::deserialize($e->getResponseBody(), 'map[string,\Swagger\Client\Model\ObjectDictionary]', $e->getResponseHeaders());
                 $e->setResponseObject($data);
                 break;
             }

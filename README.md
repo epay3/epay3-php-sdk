@@ -104,7 +104,7 @@ Class | Method | HTTP request | Description
  - [GetPaymentScheduleResponseModel](docs/GetPaymentScheduleResponseModel.md)
  - [GetTokenResponseModel](docs/GetTokenResponseModel.md)
  - [GetTransactionResponseModel](docs/GetTransactionResponseModel.md)
- - [Object](docs/Object.md)
+ - [ObjectDictionary](docs/ObjectDictionary.md)
  - [PostAuthorizeTransactionRequestModel](docs/PostAuthorizeTransactionRequestModel.md)
  - [PostAuthorizeTransactionResponseModel](docs/PostAuthorizeTransactionResponseModel.md)
  - [PostIvrSessionRequestModel](docs/PostIvrSessionRequestModel.md)
