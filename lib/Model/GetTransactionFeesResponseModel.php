@@ -1,6 +1,6 @@
 <?php
 /**
- * PostTransactionFeesResponseModel
+ * GetTransactionFeesResponseModel
  *
  * PHP version 5
  *
@@ -35,7 +35,7 @@ namespace Swagger\Client\Model;
 
 use \ArrayAccess;
 /**
- * PostTransactionFeesResponseModel Class Doc Comment
+ * GetTransactionFeesResponseModel Class Doc Comment
  *
  * @category    Class
  * @description 
@@ -44,7 +44,7 @@ use \ArrayAccess;
  * @license     http://www.apache.org/licenses/LICENSE-2.0 Apache Licene v2
  * @link        https://github.com/swagger-api/swagger-codegen
  */
-class PostTransactionFeesResponseModel implements ArrayAccess
+class GetTransactionFeesResponseModel implements ArrayAccess
 {
     /**
       * Array of property to type mappings. Used for (de)serialization 

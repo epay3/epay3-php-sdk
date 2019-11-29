@@ -89,54 +89,53 @@ class TransactionFeesApi
         $this->apiClient = $apiClient;
         return $this;
     }
-  
-    
+
     /**
-     * transactionFeesPost
+     * transactionFeesGet
      *
-     * Calculates and returns transaction fees for a given subtotal amount based on the account.
+     * Calculates and returns transaction fees for a given net amount due based on the account.
      *
-     * @param \Swagger\Client\Model\PostTransactionFeesRequestModel $post_transaction_fees_request_model Subtotal from which to calculate the transaction fees. (required)
-     * @param string $impersonation_account_key  (optional, default to )
-     * @return void
+     * @param string $amount input value of amount. (required)
+     * @param string $impersonation_account_key The key that allows impersonation of another account for which the amount is being processed. Only specify a value if the account being impersonated is different from the account that is submitting this request. (optional, default to )
+     * @return \Swagger\Client\Model\GetTransactionFeesResponseModel
      * @throws \Swagger\Client\ApiException on non-2xx response
      */
-    public function transactionFeesPost($post_transaction_fees_request_model, $impersonation_account_key = null)
+    public function transactionFeesGet($amount, $impersonation_account_key = null)
     {
-        list($response, $statusCode, $httpHeader) = $this->transactionFeesPostWithHttpInfo ($post_transaction_fees_request_model, $impersonation_account_key);
+        list($response, $statusCode, $httpHeader) = $this->transactionFeesGetWithHttpInfo ($amount, $impersonation_account_key);
         return $response; 
     }
 
 
     /**
-     * transactionFeesPostWithHttpInfo
+     * transactionFeesGetWithHttpInfo
      *
-     * Calculates and returns transaction fees for a given subtotal amount based on the account.
+     * Calculates and returns transaction fees for a given net amount due based on the account
      *
-     * @param \Swagger\Client\Model\PostTransactionFeesRequestModel $post_transaction_fees_request_model Subtotal from which to calculate the transaction fees. (required)
-     * @param string $impersonation_account_key  (optional, default to )
-     * @return Array of null, HTTP status code, HTTP response headers (array of strings)
+     * @param string $amountValue - net amount. (required)
+     * @param string $impersonation_account_key The key that allows impersonation of another account for which the amount is being processed. Only specify a value if the account being impersonated is different from the account that is submitting this request. (optional, default to )
+     * @return Array of \Swagger\Client\Model\GetTransactionFeesResponseModel, HTTP status code, HTTP response headers (array of strings)
      * @throws \Swagger\Client\ApiException on non-2xx response
      */
-    public function transactionFeesPostWithHttpInfo($post_transaction_fees_request_model, $impersonation_account_key = null)
+    public function transactionFeesGetWithHttpInfo($amountValue, $impersonation_account_key = null)
     {
         
-        // verify the required parameter 'post_transaction_fees_request_model' is set
-        if ($post_transaction_fees_request_model === null) {
-            throw new \InvalidArgumentException('Missing the required parameter $post_transaction_fees_request_model when calling transactionFeesPost');
+        // verify the required parameter 'amount' is set
+        if ($amountValue === null) {
+            throw new \InvalidArgumentException('Missing the required parameter $amountValue when calling transactionFeesGet');
         }
   
         // parse inputs
-        $resourcePath = "/api/v1/transactionFees";
+        $resourcePath = "/api/v1/transactionFees?amount={amountValue}";
         $httpBody = '';
         $queryParams = array();
         $headerParams = array();
         $formParams = array();
         $_header_accept = ApiClient::selectHeaderAccept(array('application/json', 'text/json', 'application/xml', 'text/xml'));
         if (!is_null($_header_accept)) {
-            $headerParams['Accept'] = $_header_accept;
+            $headerParams['Accept'] = "application/json";
         }
-        $headerParams['Content-Type'] = ApiClient::selectHeaderContentType(array('application/json','text/json','application/xml','text/xml','application/x-www-form-urlencoded'));
+        $headerParams['Content-Type'] = ApiClient::selectHeaderContentType(array());
   
         
         // header params
@@ -144,16 +143,20 @@ class TransactionFeesApi
         if ($impersonation_account_key !== null) {
             $headerParams['impersonationAccountKey'] = $this->apiClient->getSerializer()->toHeaderValue($impersonation_account_key);
         }
+        // path params
         
+        if ($amountValue !== null) {
+            $resourcePath = str_replace(
+                "{" . "amountValue" . "}",
+                $this->apiClient->getSerializer()->toPathValue($amountValue),
+                $resourcePath
+            );
+        }
         // default format to json
         $resourcePath = str_replace("{format}", "json", $resourcePath);
 
         
-        // body params
-        $_tempBody = null;
-        if (isset($post_transaction_fees_request_model)) {
-            $_tempBody = $post_transaction_fees_request_model;
-        }
+        
   
         // for model (json/xml)
         if (isset($_tempBody)) {
@@ -165,15 +168,23 @@ class TransactionFeesApi
         // make the API Call
         try {
             list($response, $statusCode, $httpHeader) = $this->apiClient->callApi(
-                $resourcePath, 'POST',
+                $resourcePath, 'GET',
                 $queryParams, $httpBody,
-                $headerParams
+                $headerParams, '\Swagger\Client\Model\GetTransactionFeesResponseModel'
             );
             
-            return array(null, $statusCode, $httpHeader);
+            if (!$response) {
+                return array(null, $statusCode, $httpHeader);
+            }
+
+            return array(\Swagger\Client\ObjectSerializer::deserialize($response, '\Swagger\Client\Model\GetTransactionFeesResponseModel', $httpHeader), $statusCode, $httpHeader);
             
         } catch (ApiException $e) {
             switch ($e->getCode()) { 
+            case 200:
+                $data = \Swagger\Client\ObjectSerializer::deserialize($e->getResponseBody(), '\Swagger\Client\Model\GetTransactionFeesResponseModel', $e->getResponseHeaders());
+                $e->setResponseObject($data);
+                break;
             case 400:
                 $data = \Swagger\Client\ObjectSerializer::deserialize($e->getResponseBody(), 'map[string,\Swagger\Client\Model\ObjectDictionary]', $e->getResponseHeaders());
                 $e->setResponseObject($data);
@@ -183,5 +194,4 @@ class TransactionFeesApi
             throw $e;
         }
     }
-    
 }

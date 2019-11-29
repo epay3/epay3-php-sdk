@@ -41,8 +41,10 @@ use \Swagger\Client\ObjectSerializer;
 use Swagger\Client\Model\CreditCardInformationModel;
 use Swagger\Client\Model\AttributeValueModel;
 use Swagger\Client\Api\TransactionsApi;
+use Swagger\Client\Api\TransactionFeesApi;
 use Swagger\Client\Model\PostTransactionRequestModel;
 use Swagger\Client\Model\PostVoidTransactionRequestModel;
+use Swagger\Client\Model\GetTransactionFeesResponseModel;
 require_once '../../vendor/autoload.php';
 
 /**
@@ -58,6 +60,7 @@ class TransactionsFixtureTest extends TestCase
 {
 
     private $transactionsApi;   
+    private $transactionFeesApi;
     /**
      * Prepares the environment before running a test.
      */
@@ -73,6 +76,7 @@ class TransactionsFixtureTest extends TestCase
         $apiClient = new ApiClient($configuration);
 		
         $this->transactionsApi = new TransactionsApi($apiClient);
+        $this->transactionFeesApi = new TransactionFeesApi($apiClient);
     }
     
     /**
@@ -81,9 +85,29 @@ class TransactionsFixtureTest extends TestCase
     public function tearDown()
     {
         $this->transactionsApi = null;
+        $this->transactionFeesApi = null;
         parent::tearDown();
     }
     
+    public function testShould_Successfully_GetTransactionFees_API()
+    {
+        //Get random amount between 1 and 1000
+        $randomAmount = rand(1,1000);  
+        print_r($randomAmount);              
+        print_r("\r\n");  
+
+        $transactionFeesResponseModel = new GetTransactionFeesResponseModel();
+        $transactionFeesResponseModel = $this->transactionFeesApi->transactionFeesGet($randomAmount);
+        print_r($transactionFeesResponseModel);
+        print_r("\r\n");
+        print_r($transactionFeesResponseModel->getAchPayerFee());
+        print_r("\r\n");
+        print_r($transactionFeesResponseModel->getCreditCardPayerFee());
+
+        $this->assertNotNull($transactionFeesResponseModel);
+        $this->assertTrue($transactionFeesResponseModel->getAchPayerFee() != 0);
+        $this->assertTrue($transactionFeesResponseModel->getCreditCardPayerFee() != 0);
+    }
     
     /**
      * Test case for TransactionsFixture
@@ -94,7 +118,7 @@ class TransactionsFixtureTest extends TestCase
     public function testShould_Successfully_Process_And_Void_Credit_Card() {	
         
         //Get random amount between 1 and 1000
-        $randomAmount = rand(1,1000);  
+        $randomAmount = rand(1,1000);          
         
         $postTransactionRequestModel = new PostTransactionRequestModel();
         $postTransactionRequestModel->setPayer("John Smith");
